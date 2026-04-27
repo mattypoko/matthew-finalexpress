@@ -1,24 +1,13 @@
-const db = require('../database');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database');
 
-const Bracket = {
-  create: function(data) {
-    const stmt = db.prepare(`
-      INSERT INTO brackets (player1, player2, player3, player4, winner, date)
-      VALUES (@player1, @player2, @player3, @player4, @winner, @date)
-    `);
-    return stmt.run(data);
-  },
-
-  findAll: function() {
-    return db.prepare(`
-      SELECT * FROM brackets ORDER BY createdAt DESC
-    `).all();
-  },
-  
-  deleteAll: function() {
-    return db.prepare('DELETE FROM brackets').run();
-  }
-  
-};
+const Bracket = sequelize.define('Bracket', {
+  player1: { type: DataTypes.STRING, allowNull: false },
+  player2: { type: DataTypes.STRING, allowNull: false },
+  player3: { type: DataTypes.STRING, allowNull: false },
+  player4: { type: DataTypes.STRING, allowNull: false },
+  winner: { type: DataTypes.STRING },
+  date: { type: DataTypes.STRING }
+});
 
 module.exports = Bracket;

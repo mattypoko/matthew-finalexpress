@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var bracketsRouter = require('./routes/brackets');
 
 var createError = require('http-errors');
@@ -27,6 +29,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 hbs.registerPartials(path.join(__dirname, 'views', 'partials'))
 hbs.registerPartial('partial_name', 'partial value');
+
+const Bracket = require('./models/Bracket');
+
+Bracket.sync().then(() => {
+  console.log('Database synced');
+});
 
 app.use('/', bracketsRouter);
 

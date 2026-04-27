@@ -6,7 +6,6 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Bracket Bites' });
 });
 
-// submit 4 restaurants, then start bracket
 router.post('/start', async function(req, res) {
   const { player1, player2, player3, player4 } = req.body;
   res.render('bracket', {
@@ -15,7 +14,6 @@ router.post('/start', async function(req, res) {
   });
 });
 
-// save winner to database
 router.post('/winner', async function(req, res) {
   const { player1, player2, player3, player4, winner } = req.body;
   await Bracket.create({
@@ -26,10 +24,9 @@ router.post('/winner', async function(req, res) {
   res.render('results', { title: 'Winner!', winner });
 });
 
-// if doing a coin flip, player 3/4 options are left blank.
 router.post('/flip', async function(req, res) {
   const { option1, option2, winner } = req.body;
-  Bracket.create({
+  await Bracket.create({
     player1: option1,
     player2: option2,
     player3: '-',
@@ -40,9 +37,8 @@ router.post('/flip', async function(req, res) {
   res.json({ success: true });
 });
 
-// show all database entries (history)
-router.get('/history', function(req, res) {
-  const raw = Bracket.findAll();
+router.get('/history', async function(req, res) {
+  const raw = await Bracket.findAll({ order: [['createdAt', 'DESC']] });
   const brackets = raw.map(b => ({
     id: b.id,
     player1: b.player1,
@@ -59,9 +55,8 @@ router.get('/history', function(req, res) {
   });
 });
 
-// clear history button
-router.post('/clear', function(req, res) {
-  Bracket.deleteAll();
+router.post('/clear', async function(req, res) {
+  await Bracket.destroy({ where: {} });
   res.json({ success: true });
 });
 
