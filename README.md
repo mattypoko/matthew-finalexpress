@@ -25,8 +25,8 @@ Bracket Bites is a gamified date night decision app built with Node.js, Express,
 
 App runs at `http://localhost:3000`
 
-Build command: `npm install`  
-Start command: `node ./bin/www`
+Build command: `$ npm install`  
+Start command: `$ npm start`
 
 ---
 
