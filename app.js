@@ -1,9 +1,17 @@
+var bracketsRouter = require('./routes/brackets');
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('hbs');//added
+hbs.registerHelper('json', function(context) {
+  return JSON.stringify(context);
+});
+hbs.registerHelper('isFlip', function(p3, p4) {
+  return p3 === '-' && p4 === '-';
+});
 const fs = require('fs');
 
 
@@ -31,10 +39,7 @@ hbs.registerPartial('partial_name', 'partial value');
 
 
 
-/* GET home page. */
-app.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+app.use('/', bracketsRouter);
 
 
 // catch 404 and forward to error handler

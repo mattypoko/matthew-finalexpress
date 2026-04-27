@@ -1,0 +1,70 @@
+<section class="history-page">
+  <h2>📖 Date Night History</h2>
+
+  <button onclick="clearHistory()" class="btn btn-outline" style="margin-bottom: 2rem;">🗑️ Clear History</button>
+
+  <script>
+  function clearHistory() {
+    fetch(window.location.origin + '/clear', { method: 'POST' })
+      .then(() => window.location.reload());
+  }
+  </script>
+
+  {{#if brackets}}
+    <div class="history-grid">
+      {{#each brackets}}
+        <div class="history-card">
+          <div class="history-winner">🏆 {{this.winner}}</div>
+          <div class="history-contenders">
+            {{#if this.isFlip}}
+              🪙 {{this.player1}} vs. {{this.player2}}
+            {{else}}
+              🎯 {{this.player1}}, {{this.player2}}, {{this.player3}}, {{this.player4}}
+            {{/if}}
+          </div>
+          <div class="history-date">{{this.date}}</div>
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="chart-section">
+      <h3>Most Picked Restaurants</h3>
+      <canvas id="winChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const brackets = {{{json brackets}}};
+      const counts = {};
+      brackets.forEach(b => {
+        counts[b.winner] = (counts[b.winner] || 0) + 1;
+      });
+      const labels = Object.keys(counts);
+      const data = Object.values(counts);
+
+      new Chart(document.getElementById('winChart'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Times Picked',
+            data,
+            backgroundColor: '#ff6b6b',
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    </script>
+
+  {{else}}
+    <div class="empty-state">
+      <p>No date nights yet — go play your first bracket! 🍜</p>
+      <a href="/" class="btn">Let's Go</a>
+    </div>
+  {{/if}}
+</section>

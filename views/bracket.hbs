@@ -1,0 +1,71 @@
+<section class="bracket-page">
+  <h2>🎯 The Bracket</h2>
+  <p class="subtitle">Vote round by round — your winner gets saved to history.</p>
+
+  <div class="bracket-wrapper">
+    <!-- Round 1 -->
+    <div class="round" id="round1">
+      <h3>Round 1</h3>
+      <div class="matchup" data-match="1">
+        <button class="pick-btn" data-player="{{player1}}">{{player1}}</button>
+        <span class="vs">vs</span>
+        <button class="pick-btn" data-player="{{player2}}">{{player2}}</button>
+      </div>
+      <div class="matchup" data-match="2">
+        <button class="pick-btn" data-player="{{player3}}">{{player3}}</button>
+        <span class="vs">vs</span>
+        <button class="pick-btn" data-player="{{player4}}">{{player4}}</button>
+      </div>
+    </div>
+
+    <!-- Final -->
+    <div class="round" id="final" style="display:none;">
+      <h3>🏆 Final</h3>
+      <div class="matchup" id="final-matchup">
+        <button class="pick-btn final-btn" id="finalist1"></button>
+        <span class="vs">vs</span>
+        <button class="pick-btn final-btn" id="finalist2"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden form to submit winner -->
+  <form action="/winner" method="POST" id="winner-form" style="display:none;">
+    <input type="hidden" name="player1" value="{{player1}}" />
+    <input type="hidden" name="player2" value="{{player2}}" />
+    <input type="hidden" name="player3" value="{{player3}}" />
+    <input type="hidden" name="player4" value="{{player4}}" />
+    <input type="hidden" name="winner" id="winner-input" />
+  </form>
+</section>
+
+<script>
+  let finalists = [];
+
+  document.querySelectorAll('#round1 .pick-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const match = this.closest('.matchup').dataset.match;
+      // highlight winner
+      this.closest('.matchup').querySelectorAll('.pick-btn').forEach(b => b.classList.remove('selected'));
+      this.classList.add('selected');
+      finalists[match - 1] = this.dataset.player;
+
+      // once both round 1 picks are made, show the final
+      if (finalists[0] && finalists[1]) {
+        document.getElementById('finalist1').textContent = finalists[0];
+        document.getElementById('finalist1').dataset.player = finalists[0];
+        document.getElementById('finalist2').textContent = finalists[1];
+        document.getElementById('finalist2').dataset.player = finalists[1];
+        document.getElementById('final').style.display = 'block';
+        document.getElementById('final').scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  document.querySelectorAll('.final-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.getElementById('winner-input').value = this.dataset.player;
+      document.getElementById('winner-form').submit();
+    });
+  });
+</script>

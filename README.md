@@ -1,13 +1,93 @@
-# GitHub Codespaces ♥️ Express
+# 🏆 Bracket Bites
 
-Welcome to your shiny new Codespace running Express! We've got everything fired up and running for you to explore Express.
+**Stop arguing about dinner. Let the bracket decide.**
 
-You've got a blank canvas to work on from a git perspective as well. There's a single initial commit with the what you're seeing right now - where you go from here is up to you!
+Bracket Bites is a gamified date night decision app built with Node.js, Express, Handlebars, and SQLite. Enter up to four restaurants, vote them off bracket-style, and crown a winner — or use the coin flip mode when you can't even narrow it down to four.
 
-Everything you do here is contained within this one codespace. There is no repository on GitHub yet. If and when you’re ready you can click "Publish Branch" and we’ll create your repository and push up your project. If you were just exploring then and have no further need for this code then you can simply delete your codespace and it's gone forever.
+---
 
-To run this application:
+## Features
 
-```
+- **Bracket Mode** — Enter 4 restaurants and vote round by round until one winner remains
+- **Coin Flip Mode** — Can't decide between two? Let fate handle it
+- **History** — Every bracket and flip result gets saved to a database
+- **Win Chart** — Visual bar chart showing your most-picked restaurants over time
+- **Clear History** — Wipe the slate and start fresh
+
+---
+
+## Tech Stack
+
+- **Backend:** Node.js, Express
+- **Templating:** Handlebars (hbs)
+- **Database:** SQLite via better-sqlite3
+- **Frontend:** Vanilla JS, Chart.js
+- **Deployment:** Render.com
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js v18+
+- npm
+
+### Installation
+
+```bash
+git clone https://github.com/yourusername/matthew-finalexpress.git
+cd matthew-finalexpress
+npm install
 npm start
 ```
+
+App runs at `http://localhost:3000`
+
+---
+
+## Project Structure
+
+```
+├── app.js               # Express app setup
+├── database.js          # SQLite connection
+├── models/
+│   └── Bracket.js       # Database queries
+├── routes/
+│   └── brackets.js      # All app routes
+├── views/
+│   ├── partials/        # Header and footer
+│   ├── index.hbs        # Home page
+│   ├── bracket.hbs      # Bracket game UI
+│   ├── results.hbs      # Winner reveal
+│   ├── history.hbs      # Past results + chart
+│   └── layout.hbs       # Base HTML wrapper
+└── public/
+    └── stylesheets/
+        └── style.css    # All styles
+```
+
+---
+
+## Routes
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/` | Home page |
+| POST | `/start` | Start a bracket |
+| POST | `/winner` | Save bracket winner |
+| POST | `/flip` | Save coin flip result |
+| GET | `/history` | View past results |
+| POST | `/clear` | Clear all history |
+
+---
+
+## Deployment
+
+Deployed on [Render.com](https://render.com). 
+
+Build command: `npm install`  
+Start command: `node ./bin/www`
+
+---
+
+*Made with 🍣 in Miami — Front-End Fundamentals Final Project, University of Miami 2026*

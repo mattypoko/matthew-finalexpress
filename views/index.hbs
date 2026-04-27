@@ -1,2 +1,83 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<section class="hero">
+  <h1>🏆 Bracket Bites</h1>
+  <p class="tagline">Stop arguing about dinner. Let the bracket decide.</p>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="bracketMode">🎯 Bracket Mode</button>
+    <button class="mode-btn" id="flipMode">🪙 Coin Flip</button>
+  </div>
+
+  <!-- Bracket Form -->
+  <form action="/start" method="POST" class="entry-form" id="bracketForm">
+    <div class="inputs">
+      <input type="text" name="player1" placeholder="Restaurant 1" required />
+      <input type="text" name="player2" placeholder="Restaurant 2" required />
+      <input type="text" name="player3" placeholder="Restaurant 3" required />
+      <input type="text" name="player4" placeholder="Restaurant 4" required />
+    </div>
+    <button type="submit">Generate Bracket 🎯</button>
+  </form>
+
+  <!-- Coin Flip -->
+  <div class="entry-form" id="flipForm" style="display:none;">
+    <div class="inputs" style="grid-template-columns: 1fr 1fr;">
+      <input type="text" id="flip1" placeholder="Option A" />
+      <input type="text" id="flip2" placeholder="Option B" />
+    </div>
+    <button type="button" id="flipBtn">Flip It 🪙</button>
+
+    <div id="flipResult" style="display:none;">
+      <div class="coin" id="coin">🪙</div>
+      <div class="flip-winner" id="flipWinner"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Mode toggle
+  document.getElementById('bracketMode').addEventListener('click', function() {
+    document.getElementById('bracketForm').style.display = 'block';
+    document.getElementById('flipForm').style.display = 'none';
+    this.classList.add('active');
+    document.getElementById('flipMode').classList.remove('active');
+  });
+
+  document.getElementById('flipMode').addEventListener('click', function() {
+    document.getElementById('flipForm').style.display = 'block';
+    document.getElementById('bracketForm').style.display = 'none';
+    this.classList.add('active');
+    document.getElementById('bracketMode').classList.remove('active');
+    // reset result
+    document.getElementById('flipResult').style.display = 'none';
+  });
+
+  // Coin flip logic
+  document.getElementById('flipBtn').addEventListener('click', function() {
+    const a = document.getElementById('flip1').value.trim();
+    const b = document.getElementById('flip2').value.trim();
+
+    if (!a || !b) {
+      alert('Enter both options first!');
+      return;
+    }
+
+    const result = Math.random() < 0.5 ? a : b;
+    const coin = document.getElementById('coin');
+    const winnerEl = document.getElementById('flipWinner');
+
+    document.getElementById('flipResult').style.display = 'block';
+    coin.textContent = Math.random() < 0.5 ? '🟡' : '⚪';
+    winnerEl.textContent = '🏆 ' + result;
+
+    // save to history
+    const formData = new FormData();
+    formData.append('option1', a);
+    formData.append('option2', b);
+    formData.append('winner', result);
+    fetch(window.location.origin + '/flip', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ option1: a, option2: b, winner: result })
+    }).then(r => console.log('flip status:', r.status));
+  });
+</script>
