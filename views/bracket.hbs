@@ -3,7 +3,7 @@
   <p class="subtitle">Vote round by round — your winner gets saved to history.</p>
 
   <div class="bracket-wrapper">
-    <!-- Round 1 -->
+    <!-- first round (2v2) -->
     <div class="round" id="round1">
       <h3>Round 1</h3>
       <div class="matchup" data-match="1">
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <!-- Final -->
+    <!-- final round (1v1) -->
     <div class="round" id="final" style="display:none;">
       <h3>🏆 Final</h3>
       <div class="matchup" id="final-matchup">
@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <!-- Hidden form to submit winner -->
+  <!-- final button is what submits winner to database -->
   <form action="/winner" method="POST" id="winner-form" style="display:none;">
     <input type="hidden" name="player1" value="{{player1}}" />
     <input type="hidden" name="player2" value="{{player2}}" />

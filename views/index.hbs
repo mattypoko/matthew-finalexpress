@@ -34,7 +34,7 @@
 </section>
 
 <script>
-  // Mode toggle
+  // mode toggle (bracket or coin)
   document.getElementById('bracketMode').addEventListener('click', function() {
     document.getElementById('bracketForm').style.display = 'block';
     document.getElementById('flipForm').style.display = 'none';
@@ -51,7 +51,7 @@
     document.getElementById('flipResult').style.display = 'none';
   });
 
-  // Coin flip logic
+  // coin flip logic
   document.getElementById('flipBtn').addEventListener('click', function() {
     const a = document.getElementById('flip1').value.trim();
     const b = document.getElementById('flip2').value.trim();
@@ -69,7 +69,7 @@
     coin.textContent = Math.random() < 0.5 ? '🟡' : '⚪';
     winnerEl.textContent = '🏆 ' + result;
 
-    // save to history
+    // save to history!!!
     const formData = new FormData();
     formData.append('option1', a);
     formData.append('option2', b);
